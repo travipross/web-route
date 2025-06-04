@@ -20,7 +20,7 @@ impl WebRoute {
         }
     }
 
-    pub fn as_definition_route<V: serde::Serialize>(&self) -> String {
+    pub fn as_definition_route(&self) -> String {
         let definition_segments = self
             .segments
             .iter()

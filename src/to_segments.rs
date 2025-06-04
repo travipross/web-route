@@ -1,3 +1,5 @@
+use std::cell::LazyCell;
+
 use crate::{WebRoute, route_segment::Segment};
 
 pub trait ToSegments {
@@ -26,6 +28,12 @@ impl ToSegments for String {
 }
 
 impl ToSegments for WebRoute {
+    fn to_segments(&self) -> Vec<Segment> {
+        self.segments()
+    }
+}
+
+impl ToSegments for LazyCell<WebRoute> {
     fn to_segments(&self) -> Vec<Segment> {
         self.segments()
     }
