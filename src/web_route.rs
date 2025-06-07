@@ -77,7 +77,7 @@ impl WebRoute {
     ///
     /// - [`WebRouteError::UnpopulatedParam`] if no matching entry was found in
     ///   `values` for a particular parameter.
-    /// - [`WebRouteError::InvalidValues`] if `values` does not contain
+    /// - [`WebRouteError::InvalidValue`] if `values` does not contain
     ///   key-value pairs.
     ///
     /// # Examples
