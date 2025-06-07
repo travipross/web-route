@@ -2,6 +2,11 @@
 name = "web-route"
 version = "0.1.0-alpha.1"
 edition = "2024"
+description = "Ergonomic web route construction, joining, and population for Rust web frameworks"
+license = "MIT"
+repository = "https://github.com/sidrubs/web-route"
+readme = "README.md"
+keywords = ["route", "path", "join", "web"]
 
 [[example]]
 name = "axum_nested_redirect"
