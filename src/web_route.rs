@@ -103,7 +103,7 @@ impl WebRoute {
         &self,
         values: &V,
     ) -> Result<String, WebRouteError> {
-        let values = struct_to_map(values).ok_or(WebRouteError::InvalidValues)?;
+        let values = struct_to_map(values).ok_or(WebRouteError::InvalidValue)?;
 
         let populated_segments = self
             .segments

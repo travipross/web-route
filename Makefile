@@ -4,10 +4,11 @@
 .PHONY: help
 help:
 	@echo "Available targets:"
-	@echo "  build (b)         - Build the project"
-	@echo "  test (t)          - Run tests with all features"
-	@echo "  clippy (lint)     - Run Clippy on the workspace"
-	@echo "  fmt               - Format the project using nightly"
+	@echo "  build (b)         	- Build the project"
+	@echo "  test (t)          	- Run tests with all features"
+	@echo "  clippy (lint)     	- Run Clippy on the workspace"
+	@echo "  fmt              	- Format the project using nightly"
+	@echo "  doc (d)     	  	- Build the docs"
 
 # Development group
 .PHONY: build b
@@ -26,3 +27,6 @@ clippy lint:
 fmt:
 	cargo +nightly fmt
 
+.PHONY: doc d
+doc d:
+	cargo doc --no-deps --open
