@@ -1,11 +1,16 @@
+//! Defines a simple nested `axum` router using [`WebRoute`]s to define the
+//! routes. An integration test uses these same [`WebRoute`]s to make a request
+//! to the endpoint.
+
 use std::cell::LazyCell;
 
 use axum::{Json, Router, extract::Path, routing::get};
 use fake::{Fake, Faker};
 use web_route::WebRoute;
 
-// Would be cool if we could make this able to be evaluated at compile time so that
-// this can be a const. Worst case we somehow build in the `OnceCell` stuff.
+// Would be cool if we could make this able to be evaluated at compile time so
+// that this can be a const. Worst case we somehow build in the `OnceCell`
+// stuff.
 const FOO_ROUTE: LazyCell<WebRoute> = LazyCell::new(|| WebRoute::new("/foo/{foo_id}"));
 const BAR_ROUTE: LazyCell<WebRoute> = LazyCell::new(|| WebRoute::new("/bar/{bar_id}"));
 
@@ -21,8 +26,8 @@ async fn route_handler(Path(params): Path<RouteParams>) -> Json<RouteParams> {
 
 fn build_router() -> Router {
     // Using the `WebRoute` to define axum server routes.
-    let nested_router = Router::new().route(&BAR_ROUTE.as_definition_route(), get(route_handler));
-    let root_router = Router::new().nest(&FOO_ROUTE.as_definition_route(), nested_router);
+    let nested_router = Router::new().route(&BAR_ROUTE.as_template_route(), get(route_handler));
+    let root_router = Router::new().nest(&FOO_ROUTE.as_template_route(), nested_router);
 
     root_router
 }
@@ -37,7 +42,7 @@ async fn should_be_able_to_generate_populated_route() {
     // Act
     let response = test_server
         .get(
-            // Using `WebRoute` to build a route with the tokens populated.
+            // Using `WebRoute` to build a route with the parameters populated.
             &FOO_ROUTE
                 .join(BAR_ROUTE)
                 .as_populated_route(&path_params)

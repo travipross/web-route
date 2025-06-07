@@ -1,6 +1,8 @@
+//! Defines what can be used to create and join [`WebRoute`]s.
+
 use std::cell::LazyCell;
 
-use crate::{WebRoute, route_segment::Segment};
+use crate::{WebRoute, segment::Segment};
 
 pub trait ToSegments {
     /// Defines how to convert something into a [`Vec`] of [`Segment`]s.
@@ -28,6 +30,12 @@ impl ToSegments for String {
 }
 
 impl ToSegments for WebRoute {
+    fn to_segments(&self) -> Vec<Segment> {
+        self.segments()
+    }
+}
+
+impl ToSegments for &WebRoute {
     fn to_segments(&self) -> Vec<Segment> {
         self.segments()
     }
