@@ -9,8 +9,7 @@ use fake::{Fake, Faker};
 use web_route::WebRoute;
 
 // Would be cool if we could make this able to be evaluated at compile time so
-// that this can be a const. Worst case we somehow build in the `OnceCell`
-// stuff.
+// that this can be a const without `LazyCell`.
 const FOO_ROUTE: LazyCell<WebRoute> = LazyCell::new(|| WebRoute::new("/foo/{foo_id}"));
 const BAR_ROUTE: LazyCell<WebRoute> = LazyCell::new(|| WebRoute::new("/bar/{bar_id}"));
 
