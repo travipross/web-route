@@ -1,6 +1,6 @@
 //! Defines what can be used to create and join [`WebRoute`]s.
 
-use std::cell::LazyCell;
+use std::{cell::LazyCell, sync::LazyLock};
 
 use crate::{
     ParameterizedRoute, WebRoute, parameterized_route::segment::ParameterizedSegment,
@@ -34,19 +34,25 @@ impl ToFixedSegments for String {
 
 impl ToFixedSegments for WebRoute {
     fn to_segments(&self) -> Vec<WebSegment> {
-        self.segments()
+        WebRoute::to_segments(self)
     }
 }
 
 impl ToFixedSegments for &WebRoute {
     fn to_segments(&self) -> Vec<WebSegment> {
-        self.segments()
+        WebRoute::to_segments(self)
     }
 }
 
 impl ToFixedSegments for LazyCell<WebRoute> {
     fn to_segments(&self) -> Vec<WebSegment> {
-        self.segments()
+        WebRoute::to_segments(self)
+    }
+}
+
+impl ToFixedSegments for LazyLock<WebRoute> {
+    fn to_segments(&self) -> Vec<WebSegment> {
+        WebRoute::to_segments(self)
     }
 }
 
@@ -78,26 +84,31 @@ impl ToParameterizedSegments for String {
 
 impl ToParameterizedSegments for ParameterizedRoute {
     fn to_segments(&self) -> Vec<ParameterizedSegment> {
-        self.segments()
+        ParameterizedRoute::to_segments(self)
     }
 }
 
 impl ToParameterizedSegments for &ParameterizedRoute {
     fn to_segments(&self) -> Vec<ParameterizedSegment> {
-        self.segments()
+        ParameterizedRoute::to_segments(self)
     }
 }
 
 impl ToParameterizedSegments for LazyCell<ParameterizedRoute> {
     fn to_segments(&self) -> Vec<ParameterizedSegment> {
-        self.segments()
+        ParameterizedRoute::to_segments(self)
+    }
+}
+
+impl ToParameterizedSegments for LazyLock<ParameterizedRoute> {
+    fn to_segments(&self) -> Vec<ParameterizedSegment> {
+        ParameterizedRoute::to_segments(self)
     }
 }
 
 // Could not do a generic implementation of `impl<T: ToFixedSegments>
 // ToParameterizedSegments for T` as this clashed with `String` and `&str`
 // implementations.
-
 impl ToParameterizedSegments for WebRoute {
     fn to_segments(&self) -> Vec<ParameterizedSegment> {
         ToFixedSegments::to_segments(&self)
@@ -117,6 +128,15 @@ impl ToParameterizedSegments for &WebRoute {
 }
 
 impl ToParameterizedSegments for LazyCell<WebRoute> {
+    fn to_segments(&self) -> Vec<ParameterizedSegment> {
+        ToFixedSegments::to_segments(self)
+            .into_iter()
+            .map(Into::into)
+            .collect()
+    }
+}
+
+impl ToParameterizedSegments for LazyLock<WebRoute> {
     fn to_segments(&self) -> Vec<ParameterizedSegment> {
         ToFixedSegments::to_segments(self)
             .into_iter()
