@@ -58,6 +58,13 @@ impl ToFixedSegments for LazyLock<WebRoute> {
     }
 }
 
+#[cfg(feature = "uuid")]
+impl ToFixedSegments for uuid::Uuid {
+    fn to_segments(&self) -> Vec<WebSegment> {
+        vec![WebSegment::from(*self)]
+    }
+}
+
 #[cfg(feature = "fake")]
 impl ToFixedSegments for Vec<WebSegment> {
     fn to_segments(&self) -> Vec<WebSegment> {
@@ -153,6 +160,13 @@ impl ToParameterizedSegments for LazyLock<WebRoute> {
             .into_iter()
             .map(Into::into)
             .collect()
+    }
+}
+
+#[cfg(feature = "uuid")]
+impl ToParameterizedSegments for uuid::Uuid {
+    fn to_segments(&self) -> Vec<ParameterizedSegment> {
+        vec![ParameterizedSegment::from(*self)]
     }
 }
 

@@ -103,6 +103,8 @@ For more complete examples, see the [examples](https://github.com/sidrubs/web-ro
 ## Feature Flags
 
 - `fake`: Implements [`fake::Dummy`](https://docs.rs/fake/latest/fake/trait.Dummy.html) on [`WebRoute`][] and [`ParameterizedRoute`][].
+- `uuid`: Enables support for [`uuid::Uuid`] so they can be directly joined on a [`WebRoute`][] or [`ParameterizedRoute`][]
 
 [`WebRoute`]: ./src/web_route/route.rs
 [`ParameterizedRoute`]: ./src/parameterized_route/route.rs
+[`uuid::Uuid`]: https://docs.rs/uuid/latest/uuid/struct.Uuid.html

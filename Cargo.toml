@@ -19,6 +19,9 @@ thiserror = "2"
 # `fake` feature deps
 fake = { version = "4", optional = true, features = ["derive"] }
 
+# `uuid` feature deps
+uuid = { version = "1", optional = true }
+
 [dev-dependencies]
 axum = "0.8"
 axum-test = "18"
@@ -29,6 +32,7 @@ tokio = { version = "1", features = ["rt-multi-thread"] }
 [features]
 default = ["serde"]
 fake = ["dep:fake"]
+uuid = ["dep:uuid"]
 
 # Derives `serde::{Serialize, Deserialize}`.
 # `serde` is already present in the dependency tree. Adding this as a feature

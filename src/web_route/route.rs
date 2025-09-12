@@ -118,3 +118,36 @@ fn evaluate_segments(segments: Vec<WebSegment>) -> String {
 
     format!("/{}", evaluated_segments.join("/"))
 }
+
+#[cfg(test)]
+mod join_tests {
+    use fake::{Fake, Faker};
+
+    #[cfg(feature = "uuid")]
+    #[test]
+    fn uuids_are_joined_with_hyphenated_string_representation() {
+        // Arrange
+        let base_route = Faker.fake::<crate::WebRoute>();
+        let hyphenated_uuid_str = "9a878802-7b0f-4531-bcbb-9a88d4324a5f";
+        let sample_uuid =
+            uuid::Uuid::parse_str(hyphenated_uuid_str).expect("should parse valid UUID");
+
+        // Act
+        let new_route = base_route.join(sample_uuid);
+        let segments = new_route.to_segments();
+        let (last_segment, original_segments) =
+            segments.split_last().expect("segments should not be empty");
+
+        // Assert
+        assert_eq!(
+            last_segment.to_evaluated(),
+            hyphenated_uuid_str.to_owned(),
+            "joined UUID should be the final segment"
+        );
+        assert_eq!(
+            original_segments,
+            &base_route.to_segments(),
+            "original segments should not be modified"
+        );
+    }
+}

@@ -82,6 +82,13 @@ impl From<WebSegment> for ParameterizedSegment {
     }
 }
 
+#[cfg(feature = "uuid")]
+impl From<uuid::Uuid> for ParameterizedSegment {
+    fn from(value: uuid::Uuid) -> Self {
+        Self::Static(value.to_string())
+    }
+}
+
 #[cfg(test)]
 mod segment_tests {
     use super::*;
@@ -158,6 +165,23 @@ mod segment_tests {
 
             // Assert
             assert!(matches!(segment, ParameterizedSegment::Static(value) if value == "static"));
+        }
+
+        #[cfg(feature = "uuid")]
+        #[test]
+        fn should_parse_uuid() {
+            // Arrange
+            let hyphenated_uuid_str = "aea4d73f-5762-408f-b5ae-d0899c8fe83a";
+            let sample_uuid =
+                uuid::Uuid::parse_str(hyphenated_uuid_str).expect("should parse valid UUID");
+
+            // Act
+            let segment = ParameterizedSegment::from(sample_uuid);
+
+            // Assert
+            assert!(
+                matches!(segment, ParameterizedSegment::Static(value) if value == hyphenated_uuid_str)
+            );
         }
 
         #[test]

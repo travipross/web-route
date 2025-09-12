@@ -22,3 +22,10 @@ impl TryFrom<&str> for WebSegment {
         }
     }
 }
+
+#[cfg(feature = "uuid")]
+impl From<uuid::Uuid> for WebSegment {
+    fn from(value: uuid::Uuid) -> Self {
+        Self(value.to_string())
+    }
+}
